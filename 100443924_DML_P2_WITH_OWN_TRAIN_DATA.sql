@@ -1,0 +1,128 @@
+SET search_path TO "100443924_PIERIAN_GAMES_1",PUBLIC;
+--A. Insert a new spectator.
+INSERT INTO spectator (sno,sname,semail)
+VALUES(11,'FLEMING','f1@outlook.ac.uk');
+SELECT * FROM spectator;
+
+--B. Insert a new event.
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax)
+VALUES('P011','CIRCUS','NORWICH','2024-07-31','9:30:00',700);
+SELECT * FROM EVENT;
+--C. Delete a spectator. The spectator must not have any valid (i.e. not cancelled) 
+-- tickets before it can be deleted.ASSEUM sno = 11
+DELETE FROM spectator
+ WHERE sno = 11 AND sno NOT IN ( SELECT sno FROM ticket
+ WHERE tno NOT IN ( SELECT tno FROM cancel)
+);
+--D Delete an event. All the tickets for the event must be cancelled 
+--before an event can be deleted.
+--ASSUME EVENT CODE ecode = 'P001'
+--Comment : Made Trigger function for cancel ticket record transfer to cancel table 
+--before delete event. Below code for delete event 
+--and trigger function executed and record of cancel ticket(output) in next task (Kii).
+CREATE OR REPLACE FUNCTION own_cancel_tickets_and_delete_event()
+RETURNS TRIGGER AS $$
+DECLARE
+    v_ticket_number INTEGER;
+BEGIN
+    -- cancel all  associated tickets before delete event
+    INSERT INTO cancel (tno, ecode, sno, cuser)
+    SELECT ticket.tno, ticket.ecode, ticket.sno, 'Management 1' 
+	FROM ticket WHERE ticket.ecode = OLD.ecode;
+    -- Delete the associated tickets
+    DELETE FROM ticket WHERE ecode = OLD.ecode;
+    RETURN OLD;
+END;
+$$ LANGUAGE plpgsql;
+-- Create the trigger
+CREATE TRIGGER own_cancel_tickets_and_delete_event_trigger
+BEFORE DELETE ON event
+FOR EACH ROW
+EXECUTE FUNCTION own_cancel_tickets_and_delete_event();
+DELETE FROM event WHERE ecode = 'P001';
+
+--E. Issue a ticket for an event. A spectator may have only one ticket for a given event.
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax)
+VALUES('A100','SPRINT','NORWICH','2024-07-14','14:30:00',450);
+INSERT INTO spectator (sno,sname,semail)
+VALUES(100,'JAMIE','jamie@gmail.com');
+INSERT INTO ticket (tno, ecode, sno) 
+SELECT 12, 'P010', 5 
+WHERE 
+	NOT EXISTS( SELECT ecode FROM ticket WHERE ecode IN
+(SELECT ticket.ecode FROM ticket ,event WHERE ticket.ecode = event.ecode));
+
+--F. Produce a report showing the total number of spectators liable to travel to a 
+--location. The table should show the total number of spectators that could travel to a 
+--location on each date an event is held at a location.
+SELECT 
+    event.elocation AS LOCATION,
+    event.edate AS EVENT_DATE,
+    COUNT(spectator.sno) AS TOTAL_SPECTATORS
+FROM event 
+LEFT JOIN ticket  ON event.ecode = ticket.ecode
+LEFT JOIN spectator  ON ticket.sno = spectator.sno
+GROUP BY event.elocation, event.edate
+ORDER BY event.elocation, event.edate;
+
+--G. Produce a report showing the total number of tickets issued for each event. 
+--Present the data in event description sequence.
+SELECT event.edesc AS EVENT_DESCRIPTION,
+    COUNT(ticket.tno) AS TOTAL_TICKETS_ISSUED
+FROM event 
+LEFT JOIN ticket  ON event.ecode = ticket.ecode
+GROUP BY event.edesc
+ORDER BY event.edesc;
+
+--H. As task G but only for a given event which is specified by the event code.
+
+SELECT event.edesc AS EVENT_DESCRIPTION, 
+       event.ecode AS EVENT_CODE, 
+	   COUNT(ticket.tno) AS TOTAL_TICKETS_ISSUED
+FROM event 
+LEFT JOIN ticket  ON event.ecode = ticket.ecode
+WHERE event.ecode = 'P003' 
+GROUP BY event.edesc, event.ecode;
+
+--I. Produce a report showing the schedule for a given spectator. The spectator is 
+--specified by his/her spectator number. The schedule should contain the spectator's 
+--name and the date, location, time and event description of each event for which the 
+--spectator has been issued a ticket.
+--Assume sno=2
+SELECT spectator.sname AS SPECTATOR_NAME, 
+       event.edate AS EVENT_DATE, 
+	   event.elocation AS EVENT_LOCATION, 
+	   event.etime AS EVENT_TIME, 
+	   event.edesc AS EVENT_DISCRIPTION
+FROM spectator 
+JOIN ticket  ON spectator.sno = ticket.sno
+JOIN event  ON ticket.ecode = event.ecode
+WHERE spectator.sno = 2; 
+
+--J. Given a specific ticket reference number, display the name of the spectator and 
+--the event code for the ticket and indicate if the ticket is valid or is cancelled.
+--Assume tno=2
+SELECT spectator.sname AS SPECTATOR_NAME, ticket.ecode AS EVENT_CODE,
+       (cancel.tno IS NOT NULL) AS TICKET_IS_CANCELLED
+FROM ticket 
+JOIN spectator  ON ticket.sno = spectator.sno
+LEFT JOIN cancel  ON ticket.tno = cancel.tno
+WHERE ticket.tno = 2;
+
+--K View the details of all cancelled tickets for a specific event.
+--ecode = 'P001'
+--Comment: from above task D output reflect here as mentioned in previous task comment.
+--         All canceled tickets records viewed.
+select * from cancel;
+
+--L. Delete the contents of the database tables.
+DELETE FROM event;
+DELETE FROM spectator;
+DELETE FROM ticket;
+DELETE FROM event;
+
+
+
+
+
+

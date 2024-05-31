@@ -1,0 +1,94 @@
+SET search_path TO "100443924_PIERIAN_GAMES_1",PUBLIC;
+
+-- LOADING DATA FOR EVENT TABLE
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P001','CANDLE_LIGHT','THE_HALL','2024-07-03','09:30:00',200);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P002','MUSICAL_NIGHT','ASSEMBLY_HALL','2024-07-09','14:00:00',80);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P003','WINTER_GAMES','LONG_WATER','2024-07-14','10:0:00',800);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P004','SUMMER_GAMES','LONDON','2024-07-18','11:0:00',500);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P005','SUMMER_GAMES','LONG_WATER','2024-07-05','13:0:00',250);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P006','CANDLE_LIGHT','ASSEMBLY_HALL','2024-07-06','16:0:00',150);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P007','MUSICAL_NIGHT','THE_HALL','2024-07-22','13:00:00',650);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P008','LIVE_CONCERT','CITY_CENTER','2024-07-25','17:00:00',250);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P009','TRSUREHUNT','PARK','2024-07-28','10:00:00',50);
+
+INSERT INTO event (ecode, edesc, elocation, edate, etime, emax) 
+VALUES ('P010','QUIZ','CASTLE_MDW','2024-07-11','12:00:00',170);
+
+SELECT * FROM EVENT;
+
+-- LOADING DATA FOR SPECTATOR TABLE
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (1,'ANDREW','andrew_s1@gmail.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (2,'STEVE','steve_s@outlook.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (3,'FLINTOFF','flintoff.1@yahoo.uk');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (4,'CLEARK','cleark@outlook.ac.uk');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (5,'JOHN','john_32@gmail.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (6,'COOPER','copper_s12@yahoo.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (7,'STIFEN','stifen_h@gmail.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (8,'Georgey','georgey@hotmail.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (9,'CANNEY','caneey_321@yahoo.com');
+
+INSERT INTO spectator (sno, sname, semail)
+VALUES (10,'PATRIC','pratick@outlook.com');
+
+SELECT * FROM SPECTATOR;
+
+-- Loading Data for ticket table
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P001', 1);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P002', 2);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P003', 3);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P004', 4);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P005', 5);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P006', 6);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P007', 7);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P008', 8);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P009', 9);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'P010', 10);
+	
+SELECT * FROM ticket;
+

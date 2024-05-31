@@ -1,0 +1,60 @@
+INSERT INTO event VALUES
+    ('A100', '100 metres sprint','Stadium 1','2024-07-12','16:00',1000),
+    ('AMTH', 'Marathon', 'Stadium 1', '2024-07-12', '18:00', 1000),
+    ('A400', '400 metres sprint', 'Stadium 1', '2024-07-12', '10:00', 1000),
+    ('ALJP', 'Long Jump', 'Stadium 1', '2024-07-12', '10:00', 1000),
+    ('YCHT', 'Yacht Racing', 'Marina', '2024-07-12', '09:00', 200),
+    ('WSRF', 'Wind Surfing', 'Marina', '2024-07-12', '12:00', 200),
+    ('JUDO', 'Judo', 'Arena 2', '2024-07-12', '10:00', 3),
+    ('SWIM', 'Swimming', 'Pool', '2024-07-12', '10:00', 100);
+
+
+
+ INSERT INTO spectator VALUES
+    (100, 'J. Chin','j.chin@uea.ac.uk'),
+    (200, 'W. Wang','whw@somewhere.net'),
+    (300, 'P. Mayhew','pwm@gmail.com'),
+    (400, 'R. Lapper', 'rl@uea.ac.uk'),
+    (500, 'P. Chardaire', 'pc@uea.ac.uk');
+
+
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A100', 100);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A100', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A100', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A100', 500);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'ALJP', 100);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'ALJP', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'AMTH', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'AMTH', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'AMTH', 500);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A400', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A400', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'YCHT', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'YCHT', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'YCHT', 500);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'WSRF', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'WSRF', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'JUDO', 100);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'JUDO', 300);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'JUDO', 200);
+INSERT INTO ticket VALUES
+    ((SELECT COALESCE(MAX(tno),0) FROM ticket) + 1, 'A100', 400);

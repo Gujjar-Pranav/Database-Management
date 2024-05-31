@@ -1,0 +1,12 @@
+A#100#F Liza#f.liza@uea.ac.uk
+B#A100#100 metres sprint#Stadium 1#2024-07-12#16:00#1000
+E#A100#100
+F
+G
+H#A100
+I#100
+J#1
+D#A100
+K#A100
+C#100
+L
